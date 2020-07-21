@@ -19,6 +19,7 @@ export default class Compose extends React.Component{
         </form>
         </body>
         <footer className="composefooter">
+        <div>
         <br/>
         <Link to="/compose">link to Compose</Link>
         <br/>
@@ -30,6 +31,7 @@ export default class Compose extends React.Component{
         <br/>
         <br/>
         <Link to="/messages">link to Messages</Link>
+        </div>
       </footer>
       </div>)
     }
