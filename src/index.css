@@ -12,18 +12,58 @@ code {
     monospace;
 }
 
+
+
+.signupheader {
+  background-color: yellow;
+}
+
 .signupbody {
-  background-color: #282c34;
+  background-color: wheat;
+}
+
+.signupfooter {
+  background-color: blue;
+}
+
+
+
+.composeheader {
+  background-color: yellow;
 }
 
 .composebody {
-  background-color: #282c34;
+  background-color: wheat;
+}
+
+.composefooter {
+  background-color: blue;
+}
+
+
+
+.messagesheader {
+  background-color: yellow;
 }
 
 .messagesbody {
-  background-color: #282c34;
+  background-color: wheat;
+}
+
+.messagesfooter {
+  background-color: blue;
+}
+
+
+
+.loginheader {
+  background-color: yellow;
 }
 
 .loginbody {
-  background-color: #282c34;
+  background-color: wheat;
+}
+
+.loginfooter {
+  background-color: blue;
 }

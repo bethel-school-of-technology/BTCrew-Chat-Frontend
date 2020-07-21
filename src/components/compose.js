@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 export default class Compose extends React.Component{
     render(){
         return(
+        <div>
+        <header className="composeheader">
+        <p>Compose a message!</p>
+      </header>
         <body className="composebody">
         <form>
         <p>To:</p>
@@ -13,7 +17,8 @@ export default class Compose extends React.Component{
         <br/>
         <button>Send!</button>
         </form>
-        <br/>
+        </body>
+        <footer className="composefooter">
         <br/>
         <Link to="/compose">link to Compose</Link>
         <br/>
@@ -25,7 +30,7 @@ export default class Compose extends React.Component{
         <br/>
         <br/>
         <Link to="/messages">link to Messages</Link>
-        </body>
-        )
+      </footer>
+      </div>)
     }
 }

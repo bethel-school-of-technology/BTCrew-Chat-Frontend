@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 export default class Login extends React.Component{
     render(){
         return (
-        <div className="App">
-        <header className="App-header">
-        <p>Sign In</p>
+        <div>
+        <header className="loginheader">
+        <p>Login!</p>
       </header>
       <body className="loginbody">
         <form>
@@ -19,8 +19,9 @@ export default class Login extends React.Component{
         <br/>
         <br/>
         <button>Sign Up</button>
-        </form>
-        <br/>
+        </form>  
+      </body>
+      <footer className="loginfooter">
         <br/>
         <Link to="/compose">link to Compose</Link>
         <br/>
@@ -32,7 +33,7 @@ export default class Login extends React.Component{
         <br/>
         <br/>
         <Link to="/messages">link to Messages</Link>
-      </body>
+      </footer>
     </div>)
     }
 }

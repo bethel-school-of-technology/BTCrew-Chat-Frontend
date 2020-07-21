@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 export default class Signup extends React.Component{
     render(){
         return(
+        <div>
+        <header className="signupheader">
+        <p>Signup!</p>
+        </header>
         <body className="signupbody">
         <form>
         <p>Username:</p>
@@ -15,7 +19,8 @@ export default class Signup extends React.Component{
         <br/>
         <br/>
         <button>Signup!</button>
-        <br/>
+        </body>
+        <footer className="signupfooter">
         <br/>
         <Link to="/compose">link to Compose</Link>
         <br/>
@@ -27,7 +32,8 @@ export default class Signup extends React.Component{
         <br/>
         <br/>
         <Link to="/messages">link to Messages</Link>
-        </body>
+      </footer>
+      </div>
         )
     }
 }
