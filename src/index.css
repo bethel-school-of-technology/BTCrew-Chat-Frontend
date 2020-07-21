@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.signupbody {
+  background-color: #282c34;
+}
+
+.composebody {
+  background-color: #282c34;
+}
+
+.messagesbody {
+  background-color: #282c34;
+}
+
+.loginbody {
+  background-color: #282c34;
+}

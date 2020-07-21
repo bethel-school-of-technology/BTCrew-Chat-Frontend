@@ -7,8 +7,8 @@ export default class Login extends React.Component{
         <header className="App-header">
         <p>Sign In</p>
       </header>
-      <body className="App-body">
-      <form>
+      <body className="loginbody">
+        <form>
         <p>Username:</p>
         <input></input>
         <p>Password:</p>
@@ -20,7 +20,18 @@ export default class Login extends React.Component{
         <br/>
         <button>Sign Up</button>
         </form>
-        <Link to="/signup">hello signin</Link>
+        <br/>
+        <br/>
+        <Link to="/compose">link to Compose</Link>
+        <br/>
+        <br/>
+        <Link to="/">link to Login</Link>
+        <br/>
+        <br/>
+        <Link to="/signup">link to Signup</Link>
+        <br/>
+        <br/>
+        <Link to="/messages">link to Messages</Link>
       </body>
     </div>)
     }
