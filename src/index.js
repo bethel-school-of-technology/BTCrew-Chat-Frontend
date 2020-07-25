@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import Login from './components/login';
-import Signup from './components/signup';
+import Signup from './components/signup'
 import Compose from './components/compose';
 import Messages from './components/messages';
 
