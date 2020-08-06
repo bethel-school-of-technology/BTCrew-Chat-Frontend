@@ -1,67 +1,27 @@
-import React, { Component } from "react";
-import "./login.css";
-import { Redirect } from "react-router-dom";
+import React from 'react'
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      islogged: false,
-      loginParams: {
-        user_id: "",
-        user_password: ""
-      }
-    };
-  }
-  handleFormChange = event => {
-    let loginParamsNew = { ...this.state.loginParams };
-    let val = event.target.value;
-    loginParamsNew[event.target.name] = val;
-    this.setState({
-      loginParams: loginParamsNew
-    });
-  };
- 
-  login = event => {
-    let user_id = this.state.loginParams.user_id;
-    let user_password = this.state.loginParams.user_password;
-    if (user_id === "admin" && user_password === "123") {
-      localStorage.setItem("token", "T");
-      this.setState({
-        islogged: true
-      });
-    }
-    event.preventDefault();
-  };
+export default class Login extends React.Component{
   render() {
-    if (localStorage.getItem("token")) {
-      return <Redirect to="/:signup" />;
-    }
     return (
-      <div className="container">
-        <form onSubmit={this.login} className="form-signin">
-          <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
-          <div className="row">
-            <div className="col">
-              <input
-                type="text"
-                name="user_id"
+        <div className="wrapper">
+            <form onSubmit={this.login}>
+                
+                <div className="form-group">
+                    <input type="text" className="form-control" 
+                    onChange={this.handleFormChange}
+                    placeholder="Enter UserName" />
+                </div>
+                <div className="form-group">
+                <input type="password" className="form-control" 
                 onChange={this.handleFormChange}
-                placeholder="Enter Username"
-              />
-              <input
-                type="password"
-                name="user_password"
-                onChange={this.handleFormChange}
-                placeholder="Enter Password"
-              />
-              <input type="submit" value="Login" />
-            </div>
-          </div>
+                placeholder="Enter Password"/>
+                </div>
 
-        </form>
-      </div>
-    );
-  }
+                <div className="form-group">
+                    <input type="submit" value="Submit Login" className="btn btn-success btn-block" />
+                </div>
+            </form>
+        </div>
+    )
 }
-export default Login;
+}

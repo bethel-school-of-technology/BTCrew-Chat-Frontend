@@ -1,0 +1,729 @@
+usersjs
+import React, { Component } from 'react';
+import axios from 'axios';
+
+
+export default class Users extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { usersCollection: [] };
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:3000/users/signup')
+            .then(res => {
+                this.setState({ usersCollection: res.data });
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+   
+    render() {
+        return (
+            <div className="wrapper-users">
+                <div className="container">
+                    <table className="table table-striped table-dark">
+                        <thead className="thead-dark">
+                            <tr>
+                                <td>ID</td>
+                                <td>Name</td>
+                                <td>Email</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.dataTable()}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )
+    }
+}
+
+usersjs updated
+import React, {Component} from 'react';
+import Modal from 'react-modal';
+import Validation from 'react-validation';
+import "../validation.js";
+
+export default class Users extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            users: [],
+            modalIsOpen: false,
+            firstName: '',
+            lastName: '',
+            userName: '',
+            password: '',
+            messagePrivate: '',
+            messagePublic: '',
+            id: 0
+        }
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.logChange = this.logChange.bind(this); // We capture the value and change state as user changes the value here.
+        this.handleEdit = this.handleEdit.bind(this); // Function where we submit data
+    }
+
+    openModal(message) {
+        this.setState({
+            modalIsOpen: true,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userName: user.userName,
+            password: user.password,
+            id: message.id
+        });
+    }
+
+    closeModal() {
+        this.setState({
+            modalIsOpen: false
+        });
+    }
+
+    logChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value //setting value edited by the admin in state.
+        });
+    }
+
+    handleEdit(event) {
+        //Edit functionality
+        event.preventDefault()
+        var data = {
+            name: this.state.name,
+            email: this.state.email,
+            id: this.state.id
+        }
+        fetch("/users/edit", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            console.log(data)
+            if (data === "success") {
+                this.setState({
+                    msg: "User has been edited."
+                });
+            }
+        }).catch(function(err) {
+            console.log(err)
+        });
+    }
+
+    componentDidMount() {
+        let self = this;
+        fetch('/users', {
+            method: 'GET'
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            self.setState({
+                users: data
+            });
+        }).catch(err => {
+            console.log('caught it!', err);
+        })
+    }
+
+    render() {
+        return ( 
+        <div className="container"> 
+            <div className="panel panel-default p50 uth-panel">
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Member name</th>
+                            <th>Member email</th>
+                            <th>Blood Group</th>
+                            <th>Phone number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.users.map(member =>
+                            <tr key={member.id}>
+                                <td>{member.name} </td>
+                                <td>{member.email}</td>
+                                <td>{member.bloodGroup}</td>
+                                <td>{member.phone_number}</td>
+                                <td><a onClick={() => this.openModal(member)}>Edit</a>|<a>Delete</a></td>
+                            </tr>
+                        )}
+                        //Modal to edit the user data
+                        <Modal
+                            isOpen={this.state.modalIsOpen}
+                            onRequestClose={this.closeModal}
+                            contentLabel="Example Modal" >
+                        <Validation.components.Form onSubmit={this.handleEdit} method="POST">
+                            <label>Name</label>
+                            <Validation.components.Input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='John' name='name' validations={['required']}/>
+                            <label>Email</label>
+                            <Validation.components.Input onChange={this.logChange} className="form-control" value={this.state.email} placeholder='email@email.com' name='email' validations={['required', 'email']}/>
+                            <div className="submit-section">
+                            <Validation.components.Button className="btn btn-uth-submit">Submit</Validation.components.Button>
+                            </div>
+                        </Validation.components.Form>
+                        </Modal>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        );
+    }
+}
+
+
+signup 
+render() {
+        return (
+            <div className="wrapper">
+                <form>
+                    <div className="form-group">
+                        <label>Enter First Name</label>
+                        <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <label>Enter Last Name</label>
+                        <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <label>Enter User Name</label>
+                        <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="text" className="form-control" />
+                    </div>
+
+                    <div className="form-group">
+                        <input type="submit" value="Create User" className="btn btn-success btn-block" />
+                    </div>
+                </form>
+            </div>
+        )
+    }
+}
+
+login js orignal 
+
+import React from 'react'
+
+export default class Login extends React.Component{
+    render(){
+        return (
+        <div>
+        <header className="loginheader">
+        <p>Login!</p>
+      </header>
+      <body className="loginbody">
+        <form>
+        <p>Username:</p>
+        <input></input>
+        <p>Password:</p>
+        <input></input>
+        <br/>
+        <br/>
+        <button>Log In</button>
+        <br/>
+        <br/>
+        <button>Sign Up</button>
+        </form>  
+      </body>
+     
+    </div>)
+    }
+}
+ login.js updated
+ import React, { Component } from "react";
+import "./login.css";
+import { Redirect } from "react-router-dom";
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      islogged: false,
+      loginParams: {
+        user_id: "",
+        user_password: ""
+      }
+    };
+  }
+  handleFormChange = event => {
+    let loginParamsNew = { ...this.state.loginParams };
+    let val = event.target.value;
+    loginParamsNew[event.target.name] = val;
+    this.setState({
+      loginParams: loginParamsNew
+    });
+  };
+ 
+  login = event => {
+    let user_id = this.state.loginParams.user_id;
+    let user_password = this.state.loginParams.user_password;
+    if (user_id === "admin" && user_password === "123") {
+      localStorage.setItem("token", "T");
+      this.setState({
+        islogged: true
+      });
+    }
+    event.preventDefault();
+  };
+  render() {
+    if (localStorage.getItem("token")) {
+      return <Redirect to="/:signup" />;
+    }
+    return (
+      <div className="container">
+        <form onSubmit={this.login} className="form-signin">
+          <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+          <div className="row">
+            <div className="col">
+              <input
+                type="text"
+                name="user_id"
+                onChange={this.handleFormChange}
+                placeholder="Enter Username"
+              />
+              <input
+                type="password"
+                name="user_password"
+                onChange={this.handleFormChange}
+                placeholder="Enter Password"
+              />
+              <input type="submit" value="Login" />
+            </div>
+          </div>
+
+        </form>
+      </div>
+    );
+  }
+}
+export default Login;
+
+messages.js
+import React from 'react'
+
+export default class Messages extends React.Component{
+    render(){
+        return(
+        <div>
+        <header className="messagesheader">
+        <p>Messages!</p>
+        </header>
+        <body className="messagesbody">
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        </body>
+    
+      </div>
+        )
+    }
+}
+App.js
+import React from 'react';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+
+
+import signup from './components/signup';
+import login from './components/login';
+import compose from './components/compose';
+import messages from './components/messages';
+
+  function App() {
+    return (<Router>
+      <div className="App">
+      <header>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+         <h1 className= "navbar-nav">BT Crew Chatroom</h1>
+
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item active">
+                <Link className="nav-link" to={"/signup"}>Signup</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link" to={"/login"}>Login</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link" to={"/compose"}>Compose Message</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to={"/messages"}>Messages</Link>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <Switch>
+              <Route exact path='/' component={signup} />
+              <Route path="/signup" component={signup} />
+              <Route path="/login" component={login} />
+              <Route path="/compose" component={compose} />
+              <Route path="/messages" component={messages} />
+
+            </Switch>
+          </div>
+        </div>
+      </div>
+      </div>
+  </Router>
+  );
+}
+
+export default App;
+
+messages.js
+import React from 'react'
+
+export default class Messages extends React.Component{
+    render(){
+        return(
+        <div>
+        <header className="messagesheader">
+        <p>Messages!</p>
+        </header>
+        <body className="messagesbody">
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        <h3>Jordan Alex</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed auctor tellus. In luctus blandit metus eget aliquam. Nullam ut.</p>
+        </body>
+    
+      </div>
+        )
+    }
+} 
+
+indesmessages
+import React, { Component, Fragment } from "react";
+
+class IndexMessages extends Component {
+  render() {
+    return (
+      <Fragment>
+        <h2>Messages</h2>
+      </Fragment>
+    );
+  }
+}
+export default IndexMessages;
+
+list messages
+import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
+
+class ListMessages extends Component {
+  render() {
+    const { match } = this.props;
+    return (
+      <Fragment>
+        <button>
+          <Link to={`${match.path}/new`}>New Item</Link>
+        </button>
+        <h3>Messages</h3>
+      </Fragment>
+    );
+  }
+}
+
+export default ListMessages;
+
+message private
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+const messagePrivate = ({ children, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        localStorage.getItem("token") ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+};
+export default messagePrivate;
+
+
+messages
+import React, { Component } from "react";
+import { Redirect, Switch, Route, Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import "./messages.css";
+
+import indexMessages from "./indexMessages";
+
+
+class Messages extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      islogout: false
+    };
+  }
+  signOut = () => {
+    localStorage.removeItem("token");
+    this.setState({
+      islogout: true
+    });
+  };
+  render() {
+    if (this.state.islogout) {
+      return <Redirect to="/login" />;
+    }
+    const { match } = this.props;
+    return (
+      <div>
+        <ul>
+          <li>
+            <Link to={`${match.path}`}>Messages</Link>
+          </li>
+          <li className="push-right">
+            <button onClick={this.signOut} href="#">
+              Sign Out
+            </button>
+          </li>
+        </ul>
+        
+        <main role="main">
+          <div className="main">
+            <Switch>
+              <Route path={`${match.path}/main`}>
+                <main />
+              </Route>
+              <Route exact path={`${match.path}`}>
+                <indexMessages/>
+              </Route>
+
+            </Switch>
+          </div>
+          <form>
+
+                    <div className="form-group">
+                        <label>To</label>
+                        <br></br>
+                        <textarea></textarea>
+
+                    </div>
+
+                    <div className="form-group">
+                        <input type="submit" value="Create Message" className="btn btn-success btn-block" />
+                    </div>
+                </form>
+        </main>
+      </div>
+    );
+  }
+}
+
+export default withRouter(Messages);
+
+
+new messages
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+
+class NewMessages extends Component {
+  render() {
+    return (
+      <div>
+        <button
+          onClick={() => {
+            this.props.history.goBack();
+          }}
+        >
+          Back
+        </button>
+        <h3>New Item Form</h3>
+      </div>
+    );
+  }
+}
+
+export default withRouter(NewMessages);
+
+
+userjs
+import React, { Component } from 'react';
+import axios from 'axios';
+
+
+export default class Users extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { usersCollection: [] };
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:3000/users')
+            .then(res => {
+                this.setState({ usersCollection: res.data });
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+   
+    render() {
+        return (
+            <div className="wrapper-users">
+                <div className="container">
+                    <table className="table table-striped table-dark">
+                        <thead className="thead-dark">
+                            <tr>
+                                <td>ID</td>
+                                <td>Name</td>
+                                <td>Email</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.dataTable()}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )
+    }
+}
+
+index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import Login from './components/login';
+import Signup from './components/signup'
+import Message from './components/message';
+
+const routing = (
+  <BrowserRouter>
+  
+  <Switch>
+    <Route exact path="/" component={Login}></Route>
+    <Route path="/signup" component={Signup}></Route>
+    <Route path="/message" component={Message}></Route>
+  </Switch>
+  </BrowserRouter>
+)
+
+ReactDOM.render(
+    routing,
+  document.getElementById('root')
+);
+
+
+registration
+
+import React, {Component} from 'react';
+import Validation from 'react-validation';
+import "../validation.js";
+
+export default class Registration extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            firstName: '',
+            lastName: '',
+            username: '',
+            password: '',
+            sender: '',
+            recipient: '',
+            messagePrivate: '',
+            messagePublic: ''
+        }
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+        var data = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            username: this.state.username,
+            password: this.state.password,
+            sender: this.state.sender,
+            recipient: this.state.recipient,
+            messagePrivate: this.state.messagePrivate,
+            messagePublic: this.state.messagePublic
+        }
+        console.log(data)
+        fetch("/users/new", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            if (response.status >= 400) {
+              throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            console.log(data)    
+            if(data == "success"){
+               this.setState({msg: "Thanks for registering"});  
+            }
+        }).catch(function(err) {
+            console.log(err)
+        });
+    }
+
+    logChange(e) {
+        this.setState({[e.target.name]: e.target.value});  
+    }
+
+    render() {
+        return (
+            <div className="container register-form">
+                <Validation.components.Form onSubmit={this.handleSubmit} method="POST">
+                    <label>Name</label>
+                    <Validation.components.Input onChange={this.logChange} className="form-control" value='' placeholder='John' name='name' validations={['required']}/>
+                    <label>Email</label>
+                    <Validation.components.Input onChange={this.logChange} className="form-control" value='' placeholder='email@email.com' name='email' validations={['required', 'email']}/>
+                    <div className="submit-section">
+                        <Validation.components.Button className="btn btn-uth-submit">Submit</Validation.components.Button>
+                    </div>
+                </Validation.components.Form>
+            </div>
+        );
+    }
+}
