@@ -32,24 +32,33 @@ else{
 
 })
 
-return(
-       <div className="w-full flex justify-center">
-              <div className="w1/2 rounded material-card-bg-gra-200 m-4">                <span className="px-1 text-sm text-gray-600">FirstName</span>
-                <input placeholder="Enter First Name" type="text" value={firstName}  
-                onChange={e =>setFirstName(e.target.value)} />
-                <span className="px-1 text-sm text-gray-600">LastName</span>               
-                <input placeholder="Enter LastName" type="text" value={lastName}  
-                onChange={e =>setLastName(e.target.value)}
-                />
-               <span className="px-1 text-sm text-gray-600">UserName</span>               
-                <input placeholder="Enter User Name" type="text" value={userName}  
-                onChange={e =>setUserName(e.target.value)}/>
-                <span className="px-1 text-sm text-gray-600">UserName</span>               
-                <input placeholder="Enter Password" type="text" value={password}  
-                onChange={e =>setPassword(e.target.value)}/>
-        </div>
-        </div>
+return (
+        <div className="Profile-page">
+          <h2>{userName}'s ProfilePage</h2>
+          <div className="Profile-data">
+            <div className="Profile-section">
+              <h3>First Name</h3>
+              <p>{firstName}</p>
+            </div>
+            <div className="Profile-section">
+              <h3>Last Name</h3>
+              <p>{lastName}</p>
+            </div>
+            <div className="Profile-section">
+              <h3>Username</h3>
+              <p>{userName}</p>
+            </div>
+            <div className="Profile-section">
+              <h3>Password Address</h3>
+              <p>{password}</p>
+            </div>
+    
+       
+            </div>
+          </div>
 
-};
-}
+); 
+});
+
+    
 export default Profile;

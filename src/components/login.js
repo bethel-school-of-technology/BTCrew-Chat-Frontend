@@ -22,7 +22,7 @@ const Login = withRouter (({ history }) => {
 		if(response.data.status === 200) {
 			localStorage.setItem('BSTtoken', response.data.jwt)
 			window.alert(response.data.message);
-            history.push('/profile');
+            history.push('/login');
             
         
 	}else{
@@ -33,28 +33,30 @@ const Login = withRouter (({ history }) => {
 };
 
     return (
-        <div className="container max-w-full mx-auto md:py-24 px-6">
-        <div className="text-center text-2x1">LOGIN</div>
-        <div className="w-full relative">
-        <div className="md:mt-6">
-        <div className="mt-8" onSubmit={handleSubmit}>
-        <div className="mx-auto max-w-lg">
-            <div className="py-1">
-                <span className="px-1 text-sm text-gray-600">UserName</span>
-                <input placeholder="Enter Username" type="text" value={username}  
-                onChange={e =>setUsername(e.target.value)} />
-                <span className="px-1 text-sm text-gray-600">UserName</span>               
-                <input placeholder="Enter Password" type="text" value={password}  
-                onChange={e =>setPassword(e.target.value)}
-                />
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-         </div>
+
+            <div className="wrapper">
+            <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <input type="text"className="form-control"
+                         onChange={e =>setUsername(e.target.value)} 
+                         placeholder="Enter First Name"/>
+                    </div>
+                   
+                    <div className="form-group">
+                      <input type="password" className="form-control" 
+                         onChange={e =>setPassword(e.target.value)} 
+                         placeholder="Enter Password"/>
+                    </div>
+
+                    <div className="form-group">
+                        <input type="submit" OnSubmit={handleSubmit} value="Signup" className="btn btn-success btn-block" />
+                    </div>
+                </form>
+            </div>
+
     ); 
-}
-}
+    });
+
+
 
 export default Login;
