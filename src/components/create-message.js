@@ -1,65 +1,71 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, {useState} from 'react';
+import axios from 'axios'
+import {withRouter} from 'react-router'
 
-export default class CreateMessage extends Component {
+const CreateUser = withRouter (({ history }) => {
 
-    constructor(props) {
-        super(props)
+	const [username, setUsername] = useState("");
+	const [message, setMessage] = useState("");
 
-        this.onChangeMessagePublic = this.onChangeMessagePublic.bind(this);
-        this.onChangeMessagePrivate = this.onChangeMessagePrivate.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+	const url = "http://localhost:3000/users/messages"
 
-        this.state = {
-            messagePublic: '',
-            messagePrivate: ''
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log(username, message);
+		let user = {
+			username: username,
+			password: message
+	}
+		let response = await axios.post(`${url}/create-user`, user);
 
-        }
+		console.log(response.data);
+		if(response.data.status === 200) {
+			localStorage.setItem('BSTtoken', response.data.jwt)
+			window.alert(response.data.message);
+            history.push('/messages');       
+        
     }
+    else{
+		window.alert(response.data.message);
+		history.push('/')
+    }   
 
-    onChangeMessagePublic(e) {
-        this.setState({ messagePublic: e.target.value })
-    }
+};
 
-    onChangeMessagePrivate(e) {
-       this.setState({ messagePrivate: e.target.value })
-   }
+       return (
+                    <div>
+        <input
+                   onChange={e => setUsername(e.target.value)}
+                   name="Your User Name"
+                   className="NameinputForm"
+                   value={this.state.Username}
+                   placeholder="Enter your name"
+                    />
+         <span className="px-1 text-sm text-gray-600">Message</span>
 
-    onSubmit(e) {
-        e.preventDefault()
-
-        const userObject = {
-            messagePublic: this.state.messagePublic,
-            messagePrivate: this.state.messagePrivate
-        };
-
-        axios.post('http://localhost:4000/user/message', userObject)
-            .then((res) => {
-                console.log(res.data)
-            }).catch((error) => {
-                console.log(error)
-            });
-
-        this.setState({ messagePublic: '', messagePrivate: '' })
-    }
-
-    render() {
-        return (
-            <div className="wrapper">
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <input type="text" value={this.state.messagePublic} onChange={this.onChangeMessagePublic} className="form-control" 
-                        placeholder="Enter Public Message"/>
+          <textarea
+                    
+                   onChange={e => setMessage(e.target.value)}
+                   name="Your Message"
+                   className="MessageinputForm"
+                    value={this.state.Message}
+                    placeholder="Type a message"
+                       />
+        
+            <button
+                    className="submitbutton"
+                    type="submit"
+                    onClick={this.addToMessages}
+                      >
+                    Submit your Message<i className="Messages" aria-hidden="true" />
+                    </button>
                     </div>
-                    <div className="form-group">
-                        <input type="text" value={this.state.messagePrivate} onChange={this.onChangeMessagePrivate} className="form-control" 
-                        placeholder="Enter Private Message"/>
-                    </div>
-                    <div className="form-group">
-                        <input type="submit" value="Create Message" className="btn btn-success btn-block" />
-                    </div>
-                </form>
-            </div>
-        )
-    }
-}
+                )
+        
+                }
+            }
+
+            
+export default CreateMessage;
+        
+        
