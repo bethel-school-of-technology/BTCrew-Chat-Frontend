@@ -1,0 +1,289 @@
+doesnt work
+
+message.js
+import React from 'react'
+
+class Messages extends React.Component{
+
+  constructor(props) {
+    super(props);
+      this.state = {
+      messages: "",
+
+    };
+  }
+    componentDidMount() {
+      fetch('http://localhost:4000/messages/')
+      .then(results => {
+        return results.json();
+      }
+
+
+        data.map((msg) => {
+          return(
+            <div key={msg.results}>
+              <h3 className="h3msg">{msg.message}</h3>
+              <h2 className="h2sig">-{msg.userName}</h2>
+     </div>
+        
+      };
+    render(){
+        return(
+          <div className="messagebox">
+          <h6>Your Messages</h6>
+          <h2>It is {new Date().toLocaleTimeString()}.</h2>
+      
+        </div>
+
+
+        )
+    }
+  }
+
+
+export default Messages;
+
+
+create-message
+import React, { Component } from 'react';
+import axios from 'axios';
+
+export default class CreateMessage extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.handleUserName = this.handleUserName.bind(this);
+        this.handleMessagePublic = this.handleMessagePublic.bind(this);       
+
+
+        this.state = {
+           userName: '',
+           messagePublic: ''
+         
+
+        };
+    }
+
+    handleUserName(e) {
+        this.setState({ username: e.target.value })
+    }
+
+    handleMessagePublic(e) {
+       this.setState({ messagePublic: e.target.value })
+   }
+
+   addToMessages = event =>{
+    event.preventDefault();
+        this.setState({
+            UserName: event.target.value,
+            messagePublic: event.target.value,
+   });
+
+        axios.post('http://localhost:4000/messages',{
+        Username: this.state.UserName,
+        MessagePublic: this.state.MessagePublic,
+})
+            .then((res) => {
+                console.log(res, 'UserName added');
+            }).catch((error) => {
+                console.log(error, "UserName not added, try again");
+            });
+
+        this.setState({ userName: '', messagePublic: ''
+    });
+};
+
+    render() {
+        return (
+            <div>
+<input
+           onChange={this.handleUserName}
+           name="Your User Name"
+           className="NameinputForm"
+           value={this.state.UserName}
+           placeholder="Enter your name"
+            />
+  <textarea
+              onChange={this.handleMessagePublic}
+              name="Your Message"
+              className="MessageinputForm"
+              value={this.state.MessagePublic}
+              placeholder="Type a message"
+               />
+
+    <button
+            className="submitbuttonguestbook"
+            type="submit"
+            onClick={this.addToGuestBook}
+              >
+            Submit to Guestbook<i className="GuestBookButton2" aria-hidden="true" />
+            </button>
+            </div>
+        )
+
+        }}
+
+login
+
+import React, {Component} from 'react'
+
+export default class Login extends Component{
+  render() {
+    return (
+        <div className="wrapper">
+            <form onSubmit={this.login}>
+                
+                <div className="form-group">
+                    <input type="text" className="form-control" 
+                    onChange={this.handleFormChange}
+                    placeholder="Enter UserName" />
+                </div>
+                <div className="form-group">
+                <input type="password" className="form-control" 
+                onChange={this.handleFormChange}
+                placeholder="Enter Password"/>
+                </div>
+
+                <div className="form-group">
+                    <input type="submit" value="Submit Login" className="btn btn-success btn-block" />
+                </div>
+            </form>
+        </div>
+    )
+}
+}
+messagpublic 
+import React,{Component} from 'react';
+import axios from "axios";
+
+class MessagePublic extends Component {
+  state = {
+    title: "",
+    body: ""
+  };
+
+  onTitleChange = e => {
+    this.setState({
+      title: e.target.value
+    });
+  };
+
+  onBodyChange = e => {
+    this.setState({
+      body: e.target.value
+    });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    const data = {
+      title: this.state.title,
+      body: this.state.body
+    };
+    axios
+      .post("http://localhost:3000/messagePublic", data)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  };
+
+  render() {
+    return (
+      <div className="post">
+        <form className="post" onSubmit={this.handleSubmit}>
+          <input
+            placeholder="Title" value={this.state.title}
+            onChange={this.onTitleChange} required
+          />
+          <textarea
+            placeholder="Body" value={this.state.body}
+            onChange={this.onBodyChange} required
+          />
+          <button type="submit">Create message</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default MessagePublic;
+
+createuser
+import React, { Component } from 'react';
+
+import axios from 'axios';
+
+export default class CreateMessage extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.handleUsername = this.handleUsername.bind(this);
+        this.handleMessage = this.handleMessage.bind(this);       
+
+
+        this.state = {
+           username: '',
+           message: ''
+         
+
+        };
+    }
+
+    handleUsername(e) {
+        this.setState({ username: e.target.value })
+    }
+
+    handleMessage(e) {
+       this.setState({ message: e.target.value })
+   }
+
+   addToMessages = event =>{
+    event.preventDefault();
+        this.setState({
+            Username: event.target.value,
+            message: event.target.value,
+   });
+
+        axios.post('http://localhost:3000/messages',{
+        Username: this.state.Username,
+        Message: this.state.Message,
+})
+            .then((res) => {
+                console.log(res, 'UserName added');
+            }).catch((error) => {
+                console.log(error, "UserName not added, try again");
+            });
+
+        this.setState({ username: '', messages: ''
+    });
+};
+
+    render() {
+        return (
+            <div>
+<input
+           onChange={this.handleUserName}
+           name="Your User Name"
+           className="NameinputForm"
+           value={this.state.Username}
+           placeholder="Enter your name"
+            />
+  <textarea
+              onChange={this.handleMessage}
+              name="Your Message"
+              className="MessageinputForm"
+              value={this.state.Message}
+              placeholder="Type a message"
+               />
+
+    <button
+            className="submitbutton"
+            type="submit"
+            onClick={this.addToMessages}
+              >
+            Submit your Message<i className="Messages" aria-hidden="true" />
+            </button>
+            </div>
+        )
+
+        }}
