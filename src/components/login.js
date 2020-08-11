@@ -7,7 +7,7 @@ const Login = withRouter (({ history }) => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const url = "http://localhost:3000/users"
+	const url = "http://localhost:3001/users"
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -20,11 +20,9 @@ const Login = withRouter (({ history }) => {
 
 		console.log(response.data);
 		if(response.data.status === 200) {
-			localStorage.setItem('BSTtoken', response.data.jwt)
+			localStorage.setItem('JWT', response.data.jwt)
 			window.alert(response.data.message);
-            history.push('/login');
-            
-        
+            history.push('/chatroom');
 	}else{
 		window.alert(response.data.message);
 		history.push('/')
@@ -49,7 +47,7 @@ const Login = withRouter (({ history }) => {
                     </div>
 
                     <div className="form-group">
-                        <input type="submit" OnSubmit={handleSubmit} value="Signup" className="btn btn-success btn-block" />
+                        <input type="submit" value="Login" className="btn btn-success btn-block" />
                     </div>
                 </form>
             </div>

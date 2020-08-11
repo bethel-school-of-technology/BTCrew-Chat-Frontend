@@ -52,13 +52,9 @@ return (
               <h3>Password Address</h3>
               <p>{password}</p>
             </div>
-    
-       
             </div>
           </div>
-
 ); 
 });
 
-    
 export default Profile;

@@ -7,7 +7,7 @@ const CreateMessage = withRouter (({ history }) => {
 
 	const [message, setMessage] = useState("");
 
-	const url = "http://localhost:3000/users/messages"
+	const url = "http://localhost:3001/messages/compose/public"
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
